@@ -374,14 +374,16 @@ with gr.Blocks(css=custom_css, title="Capstone Agent Dashboard") as demo:
                         submit_btn = gr.Button("Submit Query", variant="primary", scale=2)
                         
                     with gr.Row():
-                        gr.Markdown("**💡 Preset Prompts (1-5):**", scale=2)
+                        with gr.Column(scale=2, min_width=150):
+                            gr.Markdown("**💡 Preset Prompts (1-5):**")
                         scenario1_btn = gr.Button("Scenario 1", variant="secondary", size="sm", scale=1)
                         scenario2_btn = gr.Button("Scenario 2", variant="secondary", size="sm", scale=1)
                         scenario3_btn = gr.Button("Scenario 3", variant="secondary", size="sm", scale=1)
                         scenario4_btn = gr.Button("Scenario 4", variant="secondary", size="sm", scale=1)
                         scenario5_btn = gr.Button("Scenario 5", variant="secondary", size="sm", scale=1)
                     with gr.Row():
-                        gr.Markdown("**💡 Preset Prompts (6-10):**", scale=2)
+                        with gr.Column(scale=2, min_width=150):
+                            gr.Markdown("**💡 Preset Prompts (6-10):**")
                         scenario6_btn = gr.Button("Scenario 6", variant="secondary", size="sm", scale=1)
                         scenario7_btn = gr.Button("Scenario 7", variant="secondary", size="sm", scale=1)
                         scenario8_btn = gr.Button("Scenario 8", variant="secondary", size="sm", scale=1)
