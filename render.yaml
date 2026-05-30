@@ -2,13 +2,10 @@ services:
   - type: web
     name: capstone-react-agent
     runtime: docker
-    dockerfile: Dockerfile
+    dockerfilePath: Dockerfile
     plan: free # Can be upgraded to starter/standard
     region: oregon # Render region
     numInstances: 1
-    
-    # Port must match the port exposed by Gradio / Dockerfile
-    port: 7860
     
     # Environment variables set securely in the Render Dashboard
     envVars:
