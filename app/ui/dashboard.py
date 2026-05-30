@@ -362,7 +362,8 @@ with gr.Blocks(css=custom_css, title="Capstone Agent Dashboard") as demo:
                     gr.Markdown("### 💬 Conversational Chat Interface")
                     chatbot = gr.Chatbot(
                         elem_classes="chatbot-panel",
-                        height=450
+                        height=450,
+                        type="tuples"
                     )
                     
                     with gr.Row():
