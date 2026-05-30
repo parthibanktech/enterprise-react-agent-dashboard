@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+import os
 
 # Core config imports
 from app.core.config import is_live_mode_available
@@ -31,6 +33,11 @@ app.include_router(lessons.router)
 def health_check():
     """Liveness probe check to confirm service status."""
     return {"status": "healthy", "live_agent_ready": is_live_mode_available()}
+
+# Mount compiled static frontend files (must be registered last!)
+frontend_dist_path = "frontend/dist"
+if os.path.exists(frontend_dist_path):
+    app.mount("/", StaticFiles(directory=frontend_dist_path, html=True), name="frontend")
 
 if __name__ == "__main__":
     import uvicorn
