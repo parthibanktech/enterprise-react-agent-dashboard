@@ -22,7 +22,8 @@ services:
         value: production
         
     # Set up a persistent disk so SQLite database changes survive deployments!
-    disk:
-      name: sqlite-data
-      mountPath: /app/data
-      sizeGB: 1
+    # (Note: Persistent disks require a paid Render plan. Uncomment below if upgrading from the Free tier)
+    # disk:
+    #   name: sqlite-data
+    #   mountPath: /app/data
+    #   sizeGB: 1
