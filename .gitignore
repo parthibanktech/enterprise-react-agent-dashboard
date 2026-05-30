@@ -1,0 +1,32 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# Environment Variables and Sensitive Keys
+.env
+.env.*
+
+# Local Databases and Catalog files
+*.sqlite
+*.db
+
+# Archives and redundant copies
+*.zip
+*.tar.gz
+*.rar
+
+# IDE Settings and local state
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp

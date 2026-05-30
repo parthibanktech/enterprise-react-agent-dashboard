@@ -1,0 +1,270 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --font-sans: 'Outfit', 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Premium HSL Color Palette */
+  --bg-slate: 222 47% 6%;         /* #090d16 */
+  --bg-card: 217 33% 10%;        /* #101625 */
+  --border-glass: 217 30% 18% / 0.4;
+  
+  --primary: 263 90% 64%;        /* Electric Violet */
+  --primary-hover: 263 95% 70%;
+  --secondary: 190 95% 48%;      /* Neon Cyan */
+  --accent: 320 85% 60%;         /* Pink Accent */
+  
+  --text-primary: 210 40% 98%;   /* Almost White */
+  --text-muted: 215 15% 65%;
+  --success: 142 70% 50%;
+  --warning: 38 92% 50%;
+  --danger: 350 80% 50%;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: hsl(var(--bg-slate));
+  color: hsl(var(--text-primary));
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  height: 100vh;
+}
+
+/* Custom Neon Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.3);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.2);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(6, 182, 212, 0.4);
+}
+
+/* Frosted Glass Class */
+.glass-panel {
+  background: rgba(16, 22, 37, 0.6);
+  backdrop-filter: blur(16px);
+  border: 1px solid hsl(var(--border-glass));
+  border-radius: 16px;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+.glow-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.glow-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+}
+
+/* Custom Keyframe Animations */
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(6, 182, 212, 0.5);
+  }
+}
+
+.pulse-border {
+  animation: pulseGlow 4s infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* 🎓 SENTRY AI SYLLABUS CUSTOM CSS STYLES */
+
+.nav-tab-button {
+  background: transparent;
+  color: hsl(var(--text-muted));
+  border: none;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-tab-button:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.nav-tab-button.active {
+  color: #fff;
+  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+.lesson-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: rgba(16, 22, 37, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lesson-card:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(139, 92, 246, 0.2);
+  transform: translateX(4px);
+}
+
+.lesson-card.active {
+  background: rgba(139, 92, 246, 0.08);
+  border-color: rgba(139, 92, 246, 0.35);
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.1);
+}
+
+.lesson-badge {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: hsl(var(--text-muted));
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.lesson-card.active .lesson-badge {
+  background: hsl(var(--primary));
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.3);
+}
+
+.code-editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: #0b0f19;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px 12px 0 0;
+}
+
+.terminal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: #05070c;
+  border-bottom: 1px solid rgba(6, 182, 212, 0.15);
+  border-radius: 12px 12px 0 0;
+}
+
+.terminal-hacker {
+  background: #030509;
+  border: 1px solid rgba(6, 182, 212, 0.15);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+  border-radius: 12px;
+  font-family: var(--font-mono);
+  overflow: hidden;
+}
+
+.terminal-output-box {
+  padding: 16px;
+  height: 250px;
+  overflow-y: auto;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #38bdf8; /* Neon Sky */
+}
+
+.terminal-line {
+  white-space: pre-wrap;
+  margin-bottom: 4px;
+}
+
+.terminal-line.stderr {
+  color: hsl(var(--danger));
+}
+
+.terminal-line.system {
+  color: #a78bfa; /* Lavender */
+  font-weight: 500;
+}
+
+.terminal-line.success {
+  color: hsl(var(--success));
+  font-weight: bold;
+}
+
+.run-btn {
+  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.run-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+}
+
+.run-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

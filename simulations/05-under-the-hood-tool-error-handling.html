@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Simulation: Resilient Self-Correction</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #111827;
+            --border-color: #1f2937;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --accent: #f59e0b; /* Amber for exceptions and warnings */
+            --accent-glow: rgba(245, 158, 11, 0.15);
+            --code-bg: #0b0f19;
+        }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        a.back-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 24px;
+        }
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin: 0 0 12px 0;
+            letter-spacing: -0.02em;
+        }
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .flow-step {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        .flow-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 4px;
+            background: var(--accent);
+            border-radius: 4px 0 0 4px;
+        }
+        .tag {
+            font-size: 0.75rem;
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: var(--accent);
+            padding: 2px 8px;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+        h2 {
+            font-size: 1.5rem;
+            margin: 0 0 8px 0;
+            color: var(--text-main);
+        }
+        p.step-desc {
+            color: var(--text-muted);
+            margin: 0 0 16px 0;
+            font-size: 0.98rem;
+        }
+        .cycle-block {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 16px;
+        }
+        .cycle-block h4 {
+            margin: 0 0 8px 0;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .c-think { color: #f59e0b; }
+        .c-act { color: #3b82f6; }
+        .c-observe { color: #ef4444; } /* Red for exception observations */
+        .c-success { color: #10b981; } /* Green for success recovery */
+        
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+            font-size: 0.88rem;
+            color: #fbbf24;
+            margin: 0;
+        }
+        .takeaway-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            margin-top: 40px;
+            text-align: center;
+        }
+        .takeaway-card h3 {
+            color: var(--accent);
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+        .takeaway-card p {
+            color: var(--text-muted);
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <a href="index.html" class="back-link">← Back to Simulations Directory</a>
+        <h1>🛡️ Resilient Self-Correction & Error Recovery (Lesson 10)</h1>
+        <p class="subtitle">Witness how a ReAct loop handles runtime exceptions and column typos to dynamically rewrite plans without failing.</p>
+
+        <div class="flow-container">
+            <!-- Cycle 1 -->
+            <div class="flow-step">
+                <span class="badge tag">ReAct Cycle 1: The Misstep</span>
+                <h2>Attempting SQL Query with Typos</h2>
+                <p class="step-desc">The user asks: <em>"What is the category and pric of Ergonomic Desk Chair?"</em>. The model makes a column name misspelling.</p>
+                
+                <div class="cycle-block">
+                    <h4 class="c-think">🧠 THINK (Thought)</h4>
+                    <p style="margin: 0; font-size: 0.95rem; color: #d1d5db;">"The user wants category and price. I will write a SQL SELECT query targeting 'category' and 'pric'."</p>
+                </div>
+                
+                <div class="cycle-block">
+                    <h4 class="c-act">🎬 ACT (Action)</h4>
+                    <p style="margin: 0; font-size: 0.95rem; color: #d1d5db;">Call `query_products_database` with query: <code>"SELECT category, pric FROM products WHERE name = 'Ergonomic Desk Chair'"</code></p>
+                </div>
+
+                <div class="cycle-block">
+                    <h4 class="c-observe">👁️ OBSERVE (Error Observation)</h4>
+                    <p style="margin: 0; font-size: 0.95rem; color: #fca5a5;">The SQLite tool returns: <strong style="color: #ef4444;">"Database SQLite Error: no such column: pric"</strong>.</p>
+                </div>
+            </div>
+
+            <!-- Cycle 2 -->
+            <div class="flow-step">
+                <span class="badge tag">ReAct Cycle 2: Self-Reflection & Correction</span>
+                <h2>Reading error logs to recover on the fly</h2>
+                <p class="step-desc">Instead of throwing a python runtime exception, the error message is loaded back into short-term memory as a descriptive observation.</p>
+                
+                <div class="cycle-block">
+                    <h4 class="c-think">🧠 THINK (Thought)</h4>
+                    <p style="margin: 0; font-size: 0.95rem; color: #d1d5db;">"The database returned 'no such column: pric'. I made a typo. Checking schema... yes, the correct column is named 'price'. I will rewrite the query."</p>
+                </div>
+                
+                <div class="cycle-block">
+                    <h4 class="c-act">🎬 ACT (Action)</h4>
+                    <p style="margin: 0; font-size: 0.95rem; color: #d1d5db;">Call `query_products_database` with query: <code>"SELECT category, price FROM products WHERE name = 'Ergonomic Desk Chair'"</code></p>
+                </div>
+
+                <div class="cycle-block">
+                    <h4 class="c-success">👁️ OBSERVE (Success Observation)</h4>
+                    <p style="margin: 0; font-size: 0.95rem; color: #d1d5db;">SQLite executes successfully, returning row: <code>[{"category": "Furniture", "price": 249.99}]</code></p>
+                </div>
+            </div>
+
+            <!-- Cycle 3 -->
+            <div class="flow-step">
+                <span class="badge tag">ReAct Cycle 3</span>
+                <h2>Clean Final Summary</h2>
+                <pre>
+# Final conversational response
+"The category of the 'Ergonomic Desk Chair' is Furniture, and its price is $249.99."
+                </pre>
+            </div>
+        </div>
+
+        <div class="takeaway-card">
+            <h3>💡 Resiliency Takeaway</h3>
+            <p>Traditional program routers fail on syntax mistakes. In ReAct, errors are caught, parsed as conversational string parameters, and fed to the LLM to reflect, rewrite arguments, and correct its own execution paths dynamically.</p>
+        </div>
+    </main>
+</body>
+</html>

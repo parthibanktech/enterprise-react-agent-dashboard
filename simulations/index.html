@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Mission 2 Interactive Simulations</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #111827;
+            --border-color: #1f2937;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --accent: #0ea5e9;
+            --accent-glow: rgba(14, 165, 233, 0.15);
+            --gradient: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+        }
+        body {
+            font-family: 'Inter', 'Outfit', system-ui, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            font-size: 2.75rem;
+            font-weight: 900;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0 0 12px 0;
+            letter-spacing: -0.02em;
+        }
+        p.desc {
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            max-width: 800px;
+            margin: 0;
+        }
+        h2 {
+            font-size: 1.8rem;
+            margin: 40px 0 20px 0;
+            color: var(--accent);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            letter-spacing: -0.01em;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px var(--accent-glow);
+        }
+        .card:hover::before {
+            opacity: 1;
+        }
+        .card h3 {
+            font-size: 1.4rem;
+            margin: 0 0 12px 0;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .tag {
+            font-size: 0.75rem;
+            background-color: rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            color: var(--accent);
+            padding: 4px 10px;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+        }
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin: 0 0 24px 0;
+            flex-grow: 1;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient);
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: opacity 0.2s ease;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+        }
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--text-main);
+            background-color: rgba(14, 165, 233, 0.05);
+        }
+        .footer {
+            text-align: center;
+            color: #4b5563;
+            margin-top: 60px;
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="header">
+            <h1>🧠 MISSION 2: INTERACTIVE PATTERN SIMULATIONS</h1>
+            <p class="desc">Explore visual, step-by-step interactive simulations mapping the new 11-lesson ReAct Agent curriculum. Master how model states and observations cycle behind the scenes.</p>
+        </div>
+
+        <h2>🛠️ Core Curriculum Simulations</h2>
+        <div class="grid">
+            <!-- Sim 1 -->
+            <div class="card">
+                <div>
+                    <h3>Lesson 01 & 02 <span class="tag">declarative</span></h3>
+                    <p>Observe how raw model limits are compiled into JSON Schemas during tool binding, and witness how tool calling does NOT execute Python code natively.</p>
+                </div>
+                <a href="01-under-the-hood-tool-calling.html" class="btn">Launch Simulation</a>
+            </div>
+
+            <!-- Sim 2 -->
+            <div class="card">
+                <div>
+                    <h3>Lesson 04 <span class="tag">under the hood</span></h3>
+                    <p>Trace a pure Python `while` loop manually coordinating thoughts, tool actions, and tool output messages in a ReAct loop.</p>
+                </div>
+                <a href="03-under-the-hood-react-loop.html" class="btn">Launch Simulation</a>
+            </div>
+
+            <!-- Sim 3 -->
+            <div class="card">
+                <div>
+                    <h3>Lesson 08 <span class="tag">SQL Agent</span></h3>
+                    <p>Observe secure read-only SQL lookup generations and see the SQLite query validations block destructive mutations.</p>
+                </div>
+                <a href="04-usecase-it-support-agent.html" class="btn">Launch Simulation</a>
+            </div>
+
+            <!-- Sim 4 -->
+            <div class="card">
+                <div>
+                    <h3>Lesson 10 <span class="tag">resiliency</span></h3>
+                    <p>Witness the power of agent self-reflection when a database query raises column mismatch errors, recovering on the fly.</p>
+                </div>
+                <a href="05-under-the-hood-tool-error-handling.html" class="btn">Launch Simulation</a>
+            </div>
+
+            <!-- Sim 5 -->
+            <div class="card">
+                <div>
+                    <h3>Lesson 11 <span class="tag">visual capstone</span></h3>
+                    <p>Pre-view the complete dual-column Gradio application, featuring dynamic search APIs, pricing calculations, and active tracing side-by-side.</p>
+                </div>
+                <a href="06-usecase-capstone-tool-agent.html" class="btn">Launch Simulation</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            Designed for Tech Leaders Hub • AI Agentathon 4.0
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Simulation: Under The Hood ReAct Loop</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #111827;
+            --border-color: #1f2937;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --accent: #10b981; /* Emerald green for loops */
+            --accent-glow: rgba(16, 185, 129, 0.15);
+            --code-bg: #0b0f19;
+        }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        a.back-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 24px;
+        }
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin: 0 0 12px 0;
+            letter-spacing: -0.02em;
+        }
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .flow-step {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        .flow-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 4px;
+            background: var(--accent);
+            border-radius: 4px 0 0 4px;
+        }
+        .tag {
+            font-size: 0.75rem;
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: var(--accent);
+            padding: 2px 8px;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+        h2 {
+            font-size: 1.5rem;
+            margin: 0 0 8px 0;
+            color: var(--text-main);
+        }
+        p.step-desc {
+            color: var(--text-muted);
+            margin: 0 0 16px 0;
+            font-size: 0.98rem;
+        }
+        .cycle-block {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 16px;
+        }
+        .cycle-block h4 {
+            margin: 0 0 8px 0;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .c-think { color: #f59e0b; } /* Amber thoughts */
+        .c-act { color: #3b82f6; } /* Blue actions */
+        .c-observe { color: #14b8a6; } /* Teal observations */
+        
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+            font-size: 0.88rem;
+            color: #10b981;
+            margin: 0;
+        }
+        .takeaway-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            margin-top: 40px;
+            text-align: center;
+        }
+        .takeaway-card h3 {
+            color: var(--accent);
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+        .takeaway-card p {
+            color: var(--text-muted);
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <a href="index.html" class="back-link">← Back to Simulations Directory</a>
+        <h1>👁️ Under The Hood: The ReAct Loop (Lesson 04)</h1>
+        <p class="subtitle">Witness how a manual Python while loop orchestrates multi-turn sequential tool steps in intermediate memory.</p>
+
+        <div class="flow-container">
+            <!-- Cycle 1 -->
+            <div class="flow-step">
+                <span class="badge tag">ReAct Cycle 1</span>
+                <h2>Solving the Multiplication Segment</h2>
+                <p class="step-desc">The loop starts. Sridhar's agent history contains only the `HumanMessage` prompt: <em>"What is 347 * 86, and then divide by 5?"</em></p>
+                
+                <div class="cycle-block">
+                    <h4 class="c-think">🧠 THINK (Thought)</h4>
+                    <p style="margin: 0; font-size: 0.95rem; color: #d1d5db;">"The user wants to multiply 347 by 86, and then divide that by 5. First I must calculate 347 * 86. I will use the `calculate` tool."</p>
+                </div>
+                
+                <div class="cycle-block">
+                    <h4 class="c-act">🎬 ACT (Action)</h4>
+                    <p style="margin: 0; font-size: 0.95rem; color: #d1d5db;">Call Python tool `calculate` with payload: <code>{"expression": "347 * 86"}</code></p>
+                </div>
+
+                <div class="cycle-block">
+                    <h4 class="c-observe">👁️ OBSERVE (Observation)</h4>
+                    <p style="margin: 0; font-size: 0.95rem; color: #d1d5db;">The calculation function returns: <code>"29842"</code>. We wrap it in a `ToolMessage` and loop back.</p>
+                </div>
+            </div>
+
+            <!-- Cycle 2 -->
+            <div class="flow-step">
+                <span class="badge tag">ReAct Cycle 2</span>
+                <h2>Solving the Dependent Division Segment</h2>
+                <p class="step-desc">The model receives the full memory stack: 1 User prompt, 1 AIMessage tool request, and 1 ToolMessage observation. It analyzes and makes the next selection.</p>
+                
+                <div class="cycle-block">
+                    <h4 class="c-think">🧠 THINK (Thought)</h4>
+                    <p style="margin: 0; font-size: 0.95rem; color: #d1d5db;">"The result of 347 * 86 is 29842. Now I must divide this number by 5. I will call the `calculate` tool again."</p>
+                </div>
+                
+                <div class="cycle-block">
+                    <h4 class="c-act">🎬 ACT (Action)</h4>
+                    <p style="margin: 0; font-size: 0.95rem; color: #d1d5db;">Call Python tool `calculate` with payload: <code>{"expression": "29842 / 5"}</code></p>
+                </div>
+
+                <div class="cycle-block">
+                    <h4 class="c-observe">👁️ OBSERVE (Observation)</h4>
+                    <p style="margin: 0; font-size: 0.95rem; color: #d1d5db;">The calculation function returns: <code>"5968.4"</code>. We wrap it in a `ToolMessage` and loop back.</p>
+                </div>
+            </div>
+
+            <!-- Cycle 3 -->
+            <div class="flow-step">
+                <span class="badge tag">ReAct Cycle 3</span>
+                <h2>Formulating the Final Output</h2>
+                <p class="step-desc">The model sees all results are complete and outputs a final conversational conclusion. The while loop detects `.tool_calls` is empty and terminates cleanly.</p>
+                <pre>
+# Final conversational AIMessage content
+"The result of multiplying 347 by 86 is 29,842. Dividing that result by 5 gives 5,968.4."
+                </pre>
+            </div>
+        </div>
+
+        <div class="takeaway-card">
+            <h3>🧠 Takeaway for Developers</h3>
+            <p>Without the ReAct loop, an LLM would try to answer in one single turn, leading to immediate computational errors since it has no internal calculator. ReAct solves this by interleaving multi-turn observations into the prompt window.</p>
+        </div>
+    </main>
+</body>
+</html>

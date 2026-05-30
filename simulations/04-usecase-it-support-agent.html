@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Simulation: Natural-Language-to-SQL Database Agent</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #111827;
+            --border-color: #1f2937;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --accent: #6366f1; /* Indigo for database agents */
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --code-bg: #0b0f19;
+        }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        a.back-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 24px;
+        }
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin: 0 0 12px 0;
+            letter-spacing: -0.02em;
+        }
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .flow-step {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        .flow-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 4px;
+            background: var(--accent);
+            border-radius: 4px 0 0 4px;
+        }
+        .tag {
+            font-size: 0.75rem;
+            background-color: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: var(--accent);
+            padding: 2px 8px;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+        h2 {
+            font-size: 1.5rem;
+            margin: 0 0 8px 0;
+            color: var(--text-main);
+        }
+        p.step-desc {
+            color: var(--text-muted);
+            margin: 0 0 16px 0;
+            font-size: 0.98rem;
+        }
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+            font-size: 0.88rem;
+            color: #818cf8;
+            margin: 0;
+        }
+        .takeaway-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            margin-top: 40px;
+            text-align: center;
+        }
+        .takeaway-card h3 {
+            color: var(--accent);
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+        .takeaway-card p {
+            color: var(--text-muted);
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <a href="index.html" class="back-link">← Back to Simulations Directory</a>
+        <h1>📊 NL-to-SQL Database Execution (Lesson 08)</h1>
+        <p class="subtitle">Witness how natural language queries are parsed, secure SELECT query validations run, and SQLite results compile inside ReAct.</p>
+
+        <div class="flow-container">
+            <!-- Step 1 -->
+            <div class="flow-step">
+                <span class="badge tag">Step 1: Schema Introspection</span>
+                <h2>Understanding the Catalog Schema</h2>
+                <p class="step-desc">The database agent is supplied a clean description of columns during tool definition so the model knows which attributes to target in its query.</p>
+                <pre>
+Table: products
+Columns:
+  - id: INTEGER (Primary Key)
+  - name: TEXT (Product Name)
+  - category: TEXT (Category e.g. Furniture, Electronics)
+  - price: REAL (Retail Price in USD)
+  - stock: INTEGER (Available inventory)
+                </pre>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="flow-step">
+                <span class="badge tag">Step 2: SQL Query Generation</span>
+                <h2>Translating Natural Language to SQL</h2>
+                <p class="step-desc">An executive asks: <em>"Which furniture items cost more than $200?"</em>. Sridhar's agent graph translates this into a valid SQLite query.</p>
+                <pre>
+# Generated SQL string passed as argument to tool
+SELECT name, price, stock 
+FROM products 
+WHERE category = 'Furniture' AND price > 200
+                </pre>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="flow-step">
+                <span class="badge tag">Step 3: Security Validation Guard</span>
+                <h2>Enforcing read-only SELECT security guidelines</h2>
+                <p class="step-desc">Before executing the query against `mission2_products.sqlite`, the custom tool runs a security parser, filtering out mutation keywords like `DROP`, `DELETE`, or `UPDATE` to secure inventory metrics.</p>
+                <pre>
+# Security Guard Logic
+forbidden_keywords = ["insert", "update", "delete", "drop", "create", "alter"]
+# Checks and successfully validates query is SELECT-only!
+                </pre>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="flow-step">
+                <span class="badge tag">Step 4: Output Compilation</span>
+                <h2>Visual Results Formatting</h2>
+                <p class="step-desc">The rows returned by SQLite are formatted inside the ReAct messages list, and compiled into a clean Markdown table.</p>
+                <pre>
+| Product Name | Price | Stock |
+|---|---|---|
+| Ergonomic Desk Chair | $249.99 | 45 |
+| Bamboo Standing Desk | $599.00 | 15 |
+                </pre>
+            </div>
+        </div>
+
+        <div class="takeaway-card">
+            <h3>🛡️ Takeaway for Enterprise Agents</h3>
+            <p>Direct relational database access offers immense speed, but must always be guarded. Exposing raw SQL executes dangerous operations if not validated by secure, read-only SELECT filters inside the custom tool definition.</p>
+        </div>
+    </main>
+</body>
+</html>

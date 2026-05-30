@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Simulation: Gradio Capstone UI Dashboard</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #111827;
+            --border-color: #1f2937;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --accent: #6366f1; /* Purple/Indigo for Capstone UIs */
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --code-bg: #0b0f19;
+        }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        main {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+        a.back-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 24px;
+        }
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin: 0 0 12px 0;
+            letter-spacing: -0.02em;
+        }
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+        .ui-mockup {
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+            margin-bottom: 40px;
+        }
+        .ui-header {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .ui-header h3 {
+            margin: 0;
+            color: #38bdf8;
+            font-size: 1.25rem;
+        }
+        .ui-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media(max-width: 768px) {
+            .ui-columns {
+                grid-template-columns: 1fr;
+            }
+        }
+        .ui-column {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .ui-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-main);
+            border-bottom: 1px solid #334155;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+        }
+        .chat-bubble-user {
+            background-color: #3b82f6;
+            color: white;
+            border-radius: 12px 12px 0 12px;
+            padding: 10px 14px;
+            margin-bottom: 12px;
+            align-self: flex-end;
+            font-size: 0.92rem;
+            max-width: 85%;
+        }
+        .chat-bubble-ai {
+            background-color: #0f172a;
+            color: #d1d5db;
+            border: 1px solid #334155;
+            border-radius: 12px 12px 12px 0;
+            padding: 10px 14px;
+            margin-bottom: 12px;
+            align-self: flex-start;
+            font-size: 0.92rem;
+            max-width: 85%;
+        }
+        .trace-block {
+            background-color: #0b0f19;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+            font-family: monospace;
+            font-size: 0.82rem;
+            color: #38bdf8;
+        }
+        .trace-th { color: #fbbf24; }
+        .trace-ac { color: #34d399; }
+        .trace-ob { color: #22d3ee; }
+        
+        .ui-input {
+            border: 1px solid #334155;
+            background-color: #0f172a;
+            border-radius: 8px;
+            padding: 12px;
+            color: white;
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+        .takeaway-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            text-align: center;
+        }
+        .takeaway-card h3 {
+            color: var(--accent);
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+        .takeaway-card p {
+            color: var(--text-muted);
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <a href="index.html" class="back-link">← Back to Simulations Directory</a>
+        <h1>👁️ Visual Capstone: Gradio Dashboard (Lesson 11)</h1>
+        <p class="subtitle">Observe the structural side-by-side design layout displaying user dialogue in real-time alongside system trace outputs.</p>
+
+        <div class="ui-mockup">
+            <div class="ui-header">
+                <h3>🧠 MISSION 2 CAPSTONE: ENTERPRISE REACT AGENT DASHBOARD</h3>
+                <p style="margin: 4px 0 0 0; font-size: 0.85rem; color: #94a3b8;">Active Engine: Interactive Simulator Mode</p>
+            </div>
+            
+            <div class="ui-columns">
+                <!-- Chat Panel -->
+                <div class="ui-column">
+                    <div>
+                        <div class="ui-title">💬 Conversational Chat Interface</div>
+                        <div style="display: flex; flex-direction: column;">
+                            <div class="chat-bubble-user">I am traveling to Tokyo. Check if it's raining and tell me what to bring!</div>
+                            <div class="chat-bubble-ai">⏳ Reasoning... Please check the right pane.</div>
+                            <div class="chat-bubble-ai">Current conditions in **Tokyo** report a temperature of **16.8°C** with **Slight Rain**.<br>Since it is raining, you should definitely carry an **umbrella** today!</div>
+                        </div>
+                    </div>
+                    <div class="ui-input">Type your agent query here...</div>
+                </div>
+
+                <!-- Trace Panel -->
+                <div class="ui-column">
+                    <div>
+                        <div class="ui-title">🧠 Real-Time Agent Reasoning Trace</div>
+                        <div class="trace-block">
+                            <span class="trace-th">### 🧠 THINK (Cycle 1)</span><br>
+                            The user wants weather recommendations for Tokyo. First I need to look up Tokyo's coordinates using geocode_location.
+                        </div>
+                        <div class="trace-block">
+                            <span class="trace-ac">### 🎬 ACT (Call Tool)</span><br>
+                            Calling geocode_location(city_name="Tokyo")...
+                        </div>
+                        <div class="trace-block">
+                            <span class="trace-ob">### 👁️ OBSERVE (Tool Output)</span><br>
+                            {"latitude": 35.6895, "longitude": 139.6917, "city": "Tokyo"}
+                        </div>
+                        <div class="trace-block">
+                            <span class="trace-th">### 🧠 THINK (Cycle 2)</span><br>
+                            Coordinates are complete. Calling weather forecast...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="takeaway-card">
+            <h3>🎨 Visual Excellence for Enterprises</h3>
+            <p>Enterprise users need dialogue clarity, while developers require reasoning transparency. Side-by-side dashboards solve this beautifully by showing conversational dialogue on the left and full traceback actions on the right in real time.</p>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Simulation: Declarative Tool Calling</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #111827;
+            --border-color: #1f2937;
+            --text-main: #f9fafb;
+            --text-muted: #9ca3af;
+            --accent: #38bdf8;
+            --accent-glow: rgba(56, 189, 248, 0.15);
+            --code-bg: #0b0f19;
+        }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        a.back-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 24px;
+        }
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin: 0 0 12px 0;
+            letter-spacing: -0.02em;
+        }
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .flow-step {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        .flow-step::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 4px;
+            background: var(--accent);
+            border-radius: 4px 0 0 4px;
+        }
+        .tag {
+            font-size: 0.75rem;
+            background-color: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            color: var(--accent);
+            padding: 2px 8px;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+        h2 {
+            font-size: 1.5rem;
+            margin: 0 0 8px 0;
+            color: var(--text-main);
+        }
+        p.step-desc {
+            color: var(--text-muted);
+            margin: 0 0 16px 0;
+            font-size: 0.98rem;
+        }
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+            font-size: 0.88rem;
+            color: #38bdf8;
+            margin: 0;
+        }
+        .takeaway-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+            margin-top: 40px;
+            text-align: center;
+        }
+        .takeaway-card h3 {
+            color: var(--accent);
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+        .takeaway-card p {
+            color: var(--text-muted);
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <a href="index.html" class="back-link">← Back to Simulations Directory</a>
+        <h1>🛠️ Declarative Tool Calling (Lesson 01 & 02)</h1>
+        <p class="subtitle">Witness how an LLM transforms simple Python function signatures into formatted JSON requests without running any code.</p>
+
+        <div class="flow-container">
+            <!-- Step 1 -->
+            <div class="flow-step">
+                <span class="badge tag">Step 1: Python Signature Binding</span>
+                <h2>Function Signatures as Prompt Instructions</h2>
+                <p class="step-desc">When you bind a tool `@tool` in Python, LangChain parses its name, docstring, parameter types, and default values into a structured JSON Schema.</p>
+                <pre>
+# Python Code
+@tool
+def calculate(expression: str) -> str:
+    """Evaluate any mathematical expression precisely."""
+    return str(eval(expression))
+                </pre>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="flow-step">
+                <span class="badge tag">Step 2: JSON Schema Compilation</span>
+                <h2>What the Model Sees</h2>
+                <p class="step-desc">This JSON Schema is injected directly into the system prompts of ChatDeepSeek to inform it exactly when and how to structure parameters.</p>
+                <pre>
+{
+  "name": "calculate",
+  "description": "Evaluate any mathematical expression precisely.",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "expression": {
+        "type": "string"
+      }
+    },
+    "required": ["expression"]
+  }
+}
+                </pre>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="flow-step">
+                <span class="badge tag">Step 3: Declarative Selection Output</span>
+                <h2>The .tool_calls Output payload</h2>
+                <p class="step-desc">Instead of giving a text answer, the model interrupts its prediction loop and outputs a declarative parameter request. **NOTE**: No Python execution has occurred yet!</p>
+                <pre>
+# Raw JSON response payload returned by LLM
+[
+  {
+    "name": "calculate",
+    "args": {
+      "expression": "347 * 86"
+    },
+    "id": "call_abc123xyz789",
+    "type": "tool_call"
+  }
+]
+                </pre>
+            </div>
+        </div>
+
+        <div class="takeaway-card">
+            <h3>⚠️ Critical Takeaway for Students</h3>
+            <p><strong>Tool calling is purely declarative routing!</strong> The model only formats the JSON parameters indicating which tool it *wishes* to run. It is the role of your execution engine (Python code) to intercept this payload, run the function, and feed the observation back to the model.</p>
+        </div>
+    </main>
+</body>
+</html>
