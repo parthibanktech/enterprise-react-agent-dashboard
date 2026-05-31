@@ -42,6 +42,7 @@ RUN pip install --no-cache-dir .
 # Copy application source code and seed files
 COPY app/ ./app/
 COPY data/ ./data/
+COPY lessons/ ./lessons/
 
 # Copy compiled React static assets from Stage 1 into the designated FastAPI directory
 COPY --from=frontend-builder /frontend/dist ./frontend/dist
